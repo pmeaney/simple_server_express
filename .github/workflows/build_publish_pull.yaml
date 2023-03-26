@@ -63,4 +63,4 @@ jobs:
         run:  ssh dev "cat /etc/os-release"
 
       - name: Test ssh connection
-        run:  ssh dev "docker pull ghcr.io/$REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
+        run:  ssh dev "docker pull ghcr.io/$REGISTRY/$IMAGE_NAME:latest"
