@@ -53,4 +53,4 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
       - name: Test echo from the server
-        run: ssh ${{ secrets.DEV_SSH_USER }} 'cat /etc/os-release'
+        run:  ssh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} -i ~/.ssh/dev.key 'cat /etc/os-release'
