@@ -39,18 +39,18 @@ jobs:
       - name: Configure SSH so it can be used to login on each subsequent command
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/dev.key
-          chmod 600 ~/.ssh/dev.key
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519_nopass_3_26_23
+          chmod 600 ~/.ssh/id_ed25519_nopass_3_26_23
           cat >>~/.ssh/config <<END
           Host dev
             HostName $SSH_HOST
             User $SSH_USER
-            IdentityFile ~/.ssh/dev.key
+            IdentityFile ~/.ssh/id_ed25519_nopass_3_26_23
             StrictHostKeyChecking no
           END
         env:
           SSH_USER: ${{ secrets.DEV_SSH_USER }}
-          SSH_KEY: ${{ secrets.DEV_SSH_KEY_NOPASS_3_26_23 }}
+          SSH_KEY: ${{ secrets.DEV_KEY_PRIVKEY_NOPASS_3_26_23 }}
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
       - name: Test echo from the server
-        run:  ssh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} -i ${{ secrets.DEV_SSH_KEY_NOPASS_3_26_23 }} 'cat /etc/os-release'
+        run:  ssh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} 'cat /etc/os-release'
