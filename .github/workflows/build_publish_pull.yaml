@@ -35,20 +35,13 @@ jobs:
     needs: build_and_publish
     runs-on: ubuntu-latest
     steps:
-      - name: Configure SSH so it can be used to login on each subsequent command
+    - name: Configure SSH so it can be used to login on each subsequent command
         run: |
           mkdir -p ~/.ssh/
-          echo Test job-step env access: "$TEST_ITEM"
-          ssh -o StrictHostKeyChecking=no -i "$SSH_PUB_KEY" "$SSH_USER"@"$SSH_SERVER_IP" uptime
           echo "$SSH_PRIV_KEY" > ~/.ssh/id_ed25519_nopass_3_26_23
           chmod 600 ~/.ssh/id_ed25519_nopass_3_26_23
-          cat >>~/.ssh/config <<END
-          Host dev
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/id_ed25519_nopass_3_26_23
-            StrictHostKeyChecking no
-          END
+          ssh -vvv -o StrictHostKeyChecking=no -i "$SSH_PUB_KEY" "$SSH_USER"@"$SSH_SERVER_IP" uptime
+          ssh -vvv ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} -i ~/.ssh/id_ed25519_nopass_3_26_23 'cat /etc/os-release'
         env:
           SSH_USER: ${{ secrets.DEV_SSH_USER }}
           SSH_SERVER_IP: ${{ secrets.DEV_SERVER_IP }}
@@ -56,5 +49,27 @@ jobs:
           SSH_PUB_KEY: ${{ secrets.DEV_KEY_PUBKEY_NOPASS_3_26_23 }}
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
           TEST_ITEM: "Hello123"
-      - name: Test echo from the server
-        run:  ssh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} -i ~/.ssh/id_ed25519_nopass_3_26_23 'cat /etc/os-release'
+
+      # - name: Configure SSH so it can be used to login on each subsequent command
+      #   run: |
+      #     mkdir -p ~/.ssh/
+      #     echo Test job-step env access: "$TEST_ITEM"
+      #     ssh -vvv -o StrictHostKeyChecking=no -i "$SSH_PUB_KEY" "$SSH_USER"@"$SSH_SERVER_IP" uptime
+      #     echo "$SSH_PRIV_KEY" > ~/.ssh/id_ed25519_nopass_3_26_23
+      #     chmod 600 ~/.ssh/id_ed25519_nopass_3_26_23
+      #     cat >>~/.ssh/config <<END
+      #     Host dev
+      #       HostName $SSH_HOST
+      #       User $SSH_USER
+      #       IdentityFile ~/.ssh/id_ed25519_nopass_3_26_23
+      #       StrictHostKeyChecking no
+      #     END
+      #   env:
+      #     SSH_USER: ${{ secrets.DEV_SSH_USER }}
+      #     SSH_SERVER_IP: ${{ secrets.DEV_SERVER_IP }}
+      #     SSH_PRIV_KEY: ${{ secrets.DEV_KEY_PRIVKEY_NOPASS_3_26_23 }}
+      #     SSH_PUB_KEY: ${{ secrets.DEV_KEY_PUBKEY_NOPASS_3_26_23 }}
+      #     SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+      #     TEST_ITEM: "Hello123"
+      # - name: Test echo from the server
+      #   run:  ssh -vvv ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} -i ~/.ssh/id_ed25519_nopass_3_26_23 'cat /etc/os-release'
