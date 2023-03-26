@@ -63,4 +63,4 @@ jobs:
         run:  ssh dev "cat /etc/os-release"
 
       - name: Test ssh connection
-        run:  ssh dev "docker pull ${{ secrets.DEV_GITHUB_USER }}/$IMAGE_NAME:$GITHUB_SHA -u ${{ secrets.DEV_GITHUB_USER }} -p ${{ secrets.GH_PAT_3_26_23 }}"
+        run:  ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
