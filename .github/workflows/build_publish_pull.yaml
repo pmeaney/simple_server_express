@@ -26,10 +26,10 @@ jobs:
           password: ${{ secrets.GH_PAT_3_26_23 }}
 
       - name: Build container image
-        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA) .
+        run: docker build -t $REGISTRY/$IMAGE_NAME:$GITHUB_SHA .
 
       - name: Push image to Container Registry
-        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA)
+        run: docker push $REGISTRY/$IMAGE_NAME:$GITHUB_SHA
   
   login_and_pull:
     needs: build_and_publish
@@ -52,4 +52,4 @@ jobs:
           SSH_PRIV_KEY: ${{ secrets.DEV_KEY_PRIVKEY_NOPASS_3_26_23 }}
           DEV_SERVER_IP: ${{ secrets.DEV_SERVER_IP }}
       - name: Download the app image
-        run:  ssh dev "docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA)"
+        run:  ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
