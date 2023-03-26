@@ -35,7 +35,7 @@ jobs:
     needs: build_and_publish
     runs-on: ubuntu-latest
     steps:
-      - name: Configure SSH so it can be used to login on each subsequent command
+      - name: Take ssh key from github repo, copy it into the ubuntu VM, so we can access the server & download the docker image
         run: |
           mkdir -p ~/.ssh/
           echo "$SSH_PRIV_KEY" > ~/.ssh/id_ed25519
@@ -51,6 +51,5 @@ jobs:
           SSH_USER: ${{ secrets.DEV_SSH_USER }}
           SSH_PRIV_KEY: ${{ secrets.DEV_KEY_PRIVKEY_NOPASS_3_26_23 }}
           DEV_SERVER_IP: ${{ secrets.DEV_SERVER_IP }}
-          TEST_ITEM: "Hello123"
-      - name: Test echo from the server
-        run:  ssh dev 'cat /etc/os-release'
+      - name: Download the app image
+        run:  ssh dev "docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA)"
