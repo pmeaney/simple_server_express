@@ -60,9 +60,7 @@ jobs:
           password: ${{ secrets.GH_PAT_3_26_23 }}
 
       - name: Test ssh connection
-        run:  ssh dev "cat /etc/os-release"
+        run: ssh dev "cat /etc/os-release"
 
       - name: Test ssh connection
-        run: |
-          echo ${{ secrets.GH_PAT_3_26_23 }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
+        run: ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
