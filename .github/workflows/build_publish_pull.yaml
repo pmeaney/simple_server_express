@@ -60,4 +60,4 @@ jobs:
           password: ${{ secrets.GH_PAT_3_26_23 }}
 
       - name: Download the app image
-        run:  ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
+        run:  ssh dev "cat /etc/os-release"
