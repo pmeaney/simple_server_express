@@ -52,15 +52,15 @@ jobs:
           SSH_PRIV_KEY: ${{ secrets.DEV_KEY_PRIVKEY_NOPASS_3_26_23 }}
           DEV_SERVER_IP: ${{ secrets.DEV_SERVER_IP }}
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_PAT_3_26_23 }}
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GH_PAT_3_26_23 }}
 
       - name: Test ssh connection
         run:  ssh dev "cat /etc/os-release"
 
       - name: Test ssh connection
-        run:  ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
+        run:  ssh dev "docker pull ghcr.io/${{ secrets.DEV_GITHUB_USER }}/$IMAGE_NAME:$GITHUB_SHA"
