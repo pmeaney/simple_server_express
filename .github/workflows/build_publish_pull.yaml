@@ -53,4 +53,4 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_KEY_PRIVKEY_NOPASS_3_26_23 }}
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
       - name: Test echo from the server
-        run:  ssh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} 'cat /etc/os-release'
+        run:  ssh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SERVER_IP }} -i ~/.ssh/id_ed25519_nopass_3_26_23 'cat /etc/os-release'
