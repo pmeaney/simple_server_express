@@ -55,7 +55,7 @@ jobs:
       - name: Test ssh connection
         run:  ssh dev "cat /etc/os-release"
 
-      - name: Test ssh connection
+      - name: Ssh in & log into GHCR.  Then docker pull.
         run: |
-          echo ${{ secrets.GH_PAT_3_26_23 }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          ssh dev "echo ${{ secrets.GH_PAT_3_26_23 }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin"
           ssh dev "docker pull $REGISTRY/$IMAGE_NAME:$GITHUB_SHA"
